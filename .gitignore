@@ -1,0 +1,7 @@
+.classpath
+.project
+.settings
+.idea
+build
+target
+generated-resources

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>elasticsearch-zeromq-torrent</artifactId>
+  <version>0.1</version>
+  <name>Elasticsearch ZeroMQ torrent</name>
+  <description>Fast insert into Elasticsearch using Zeromq</description>
+
+  <scm>
+    <connection>scm:git:git@github.com:bpaquet/elasticsearch-zeromq-torrent.git</connection>
+    <developerConnection>scm:git:git@github.com:bpaquet/elasticsearch-zeromq-torrent.git</developerConnection>
+    <url>http://github.com/bpaquet/elasticsearch-zeromq-torrent</url>
+  </scm>
+
+  <parent>
+    <groupId>org.elasticsearch.plugin</groupId>
+    <artifactId>plugins</artifactId>
+    <version>2.1.1</version>
+  </parent>
+
+  <properties>
+    <elasticsearch.version>2.1.1</elasticsearch.version>
+    <elasticsearch.plugin.classname>com.baquet.elasticsearch.zeromq_elasticsearch.ElasticsarchZeroMQTorrentPlugin</elasticsearch.plugin.classname>
+    <skip.unit.tests>true</skip.unit.tests>
+    <jeromq.version>0.3.4</jeromq.version>
+    <jzmq.version>3.0.1</jzmq.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.zeromq</groupId>
+      <artifactId>jzmq</artifactId>
+      <version>${jzmq.version}</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.zeromq</groupId>
+      <artifactId>jeromq</artifactId>
+      <version>${jeromq.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <!-- This plugin bundles a config so it can't use the standard assembly 
+          for plugins. -->
+        <configuration>
+          <descriptors>
+            <descriptor>src/main/assemblies/plugin.xml</descriptor>
+          </descriptors>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <repositories>
+    <!-- We need this repository when we depend on a parent pom which is 
+      a SNAPSHOT one -->
+    <repository>
+      <id>oss-snapshots</id>
+      <name>Sonatype OSS Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    </repository>
+  </repositories>
+</project>
