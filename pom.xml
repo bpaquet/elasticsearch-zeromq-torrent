@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>elasticsearch-zeromq-torrent</artifactId>
-  <version>0.1</version>
+  <version>0.2-SNAPSHOT</version>
   <name>Elasticsearch ZeroMQ torrent</name>
   <description>Fast insert into Elasticsearch using Zeromq</description>
 
