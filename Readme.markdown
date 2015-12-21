@@ -65,6 +65,6 @@ Use JZMQ
 
 * Install the plugin
 * Go into plugin directory : ``plugins/river-zeromq``
-* Remove jeromq and jzmq jars
+* Remove jeromq jar
 * Copy the zmq.jar (standard installation path is ``/usr/share/java/zmq.jar``)
-* Set ``java.library.path`` while starting ElasticSearch : ``JAVA_OPTS="-Djava.library.path=/lib" bin/elasticsearch -f``
+* Set ``java.library.path`` while starting ElasticSearch : ``JAVA_OPTS="-Djava.library.path=/lib" bin/elasticsearch``
