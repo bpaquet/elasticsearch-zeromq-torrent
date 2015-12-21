@@ -8,7 +8,7 @@ ElasticSearch compatibilty : developped and tested against 2.1.1.
 This plugin use by default [JeroMQ](https://github.com/zeromq/jeromq), a pure Java ZeroMQ implementation. See below to use [JZmq](https://github.com/zeromq/jzmq).
 
 Why
-----
+---
 
 The standard logstash method to index use [HTTP Bulk insert](https://www.elastic.co/guide/en/logstash/current/plugins-outputs-elasticsearch.html). It can been slow, and expensive.
 
@@ -18,7 +18,7 @@ Installation
 ---
 
 ```sh
-bin/plugin -install bpaquet/elasticsearch-river-zeromq/0.0.2 --url https://github.com/bpaquet/elasticsearch-river-zeromq/releases/download/v0.0.2/elasticsearch-river-zeromq-0.0.2.zip
+bin/plugin install https://github.com/bpaquet/elasticsearch-zeromq-torrent/releases/download/0.2/elasticsearch-zeromq-torrent-0.2.zip
 ```
 
 How to use it
@@ -40,12 +40,12 @@ zeromq.bulk_size: 2000
 zeromq.flush_interval: 1
 ```
 
-From logstash, use
+On client side, from logstash, use
 
 ```
 output {
   zeromq {
-	  topology => "pushpull"
+	topology => "pushpull"
   	mode => "client"
   	address => ["tcp://127.0.0.1:5556"]
   }
