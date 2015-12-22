@@ -3,7 +3,11 @@ ZeroMQ Logstash Torrent Plugin for ElasticSearch
 
 This plugin allows fast indexing from [logstash](https://www.elastic.co/products/logstash) or [node-logstash](https://github.com/bpaquet/node-logstash), using the ZeroMQ transport. This plugin replace the [elasticsearch zeromq river](https://www.elastic.co/products/logstash), which can not be used with ElasticSearch > 1.x.
 
-ElasticSearch compatibilty : developped and tested against 2.1.1.
+Compatibility
+
+|  Elasticsearch    | Plugin  | Doc                                                                        | 
+|-------------------|---------|----------------------------------------------------------------------------|
+| 2.1.1             | 0.3     | [github](https://github.com/bpaquet/elasticsearch-zeromq-torrent/tree/0.3) |
 
 This plugin use by default [JeroMQ](https://github.com/zeromq/jeromq), a pure Java ZeroMQ implementation. See below to use [JZmq](https://github.com/zeromq/jzmq).
 
@@ -18,7 +22,7 @@ Installation
 ---
 
 ```sh
-bin/plugin install https://github.com/bpaquet/elasticsearch-zeromq-torrent/releases/download/0.2/elasticsearch-zeromq-torrent-0.2.zip
+bin/plugin install https://github.com/bpaquet/elasticsearch-zeromq-torrent/releases/download/0.3/elasticsearch-zeromq-torrent-0.3.zip
 ```
 
 How to use it
