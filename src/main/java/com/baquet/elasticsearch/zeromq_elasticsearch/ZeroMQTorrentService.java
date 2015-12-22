@@ -64,13 +64,15 @@ public class ZeroMQTorrentService extends AbstractLifecycleComponent<ZeroMQTorre
 
   @Override
   protected void doClose() {
-    logger.info("Closing ZeroMQ torrent [{}]", address);
-    loop = false;
-    try {
-      thread.join();
-      logger.info("ZeroMQ torrent [{}] closed", address);
-    } catch (InterruptedException e) {
-      logger.error("Interrupted while waiting end of ZeroMQ loop {}", e);
+    if (thread != null) {
+      logger.info("Closing ZeroMQ torrent [{}]", address);
+      loop = false;
+      try {
+        thread.join();
+        logger.info("ZeroMQ torrent [{}] closed", address);
+      } catch (InterruptedException e) {
+        logger.error("Interrupted while waiting end of ZeroMQ loop {}", e);
+      }
     }
   }
 

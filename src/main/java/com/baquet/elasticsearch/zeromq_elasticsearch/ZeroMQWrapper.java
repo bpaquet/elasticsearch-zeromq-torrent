@@ -65,9 +65,9 @@ public class ZeroMQWrapper {
   /********* JeroMQ *********/
 
   private boolean jeroMqCreateSocket() {
-    jeroMQCtx = zmq.ZMQ.zmq_init(1);
-    jeroMQSocket = zmq.ZMQ.zmq_socket(jeroMQCtx, zmq.ZMQ.ZMQ_PULL);
-    boolean ok = zmq.ZMQ.zmq_bind(jeroMQSocket, address);
+    jeroMQCtx = zmq.ZMQ.init(1);
+    jeroMQSocket = zmq.ZMQ.socket(jeroMQCtx, zmq.ZMQ.ZMQ_PULL);
+    boolean ok = zmq.ZMQ.bind(jeroMQSocket, address);
     if (ok) {
       jeroMQPollItems = new zmq.PollItem[] { new zmq.PollItem(jeroMQSocket, zmq.ZMQ.ZMQ_POLLIN) };
       logger.info("ZeroMQ socket bound to {}", address);
@@ -80,23 +80,23 @@ public class ZeroMQWrapper {
 
   private void jeroMQCloseSocket() {
     if (jeroMQSocket != null) {
-      zmq.ZMQ.zmq_close(jeroMQSocket);
+      zmq.ZMQ.close(jeroMQSocket);
       logger.info("ZeroMQ socket closed");
       jeroMQSocket = null;
     }
     if (jeroMQCtx != null) {
-      zmq.ZMQ.zmq_term(jeroMQCtx);
+      zmq.ZMQ.term(jeroMQCtx);
       logger.info("ZeroMQ context terminated");
       jeroMQCtx = null;
     }
   }
 
   private int jeroMQPoll(int delay) {
-    return zmq.ZMQ.zmq_poll(jeroMQPollItems, delay);
+    return zmq.ZMQ.poll(jeroMQPollItems, delay);
   }
 
   private byte[] jeroMQreceiveMessage() {
-    zmq.Msg msg = zmq.ZMQ.zmq_recv(jeroMQSocket, 0);
+    zmq.Msg msg = zmq.ZMQ.recv(jeroMQSocket, 0);
     return msg.data();
   }
 

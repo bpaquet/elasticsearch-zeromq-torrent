@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>elasticsearch-zeromq-torrent</artifactId>
-  <version>0.2</version>
+  <version>0.3</version>
   <name>Elasticsearch ZeroMQ torrent</name>
   <description>Fast insert into Elasticsearch using Zeromq</description>
 
@@ -23,8 +23,8 @@
     <elasticsearch.version>2.1.1</elasticsearch.version>
     <elasticsearch.plugin.classname>com.baquet.elasticsearch.zeromq_elasticsearch.ElasticsarchZeroMQTorrentPlugin</elasticsearch.plugin.classname>
     <skip.unit.tests>true</skip.unit.tests>
-    <jeromq.version>0.3.4</jeromq.version>
-    <jzmq.version>3.0.1</jzmq.version>
+    <jeromq.version>0.3.5</jeromq.version>
+    <jzmq.version>3.1.0</jzmq.version>
   </properties>
 
   <dependencies>
