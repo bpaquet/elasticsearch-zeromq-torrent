@@ -72,6 +72,6 @@ The installation is more complicated, but performances should be better.
 * Install [jzmq](https://github.com/zeromq/jzmq)
 * Install the plugin (see above)
 * Go into plugin directory : ``elasticsearch-zeromq-torrent``
-* Remove jeromq
+* Remove jeromq : ``rm jeromq*.jar``
 * Download the jzmq.jar, or copy it from your JZMQ install: ``wget https://repo1.maven.org/maven2/org/zeromq/jzmq/3.1.0/jzmq-3.1.0.jar``
 * Launch Elasticsearch, with following options to specify your JZMQ path and disable the security manager : ``JAVA_OPTS="-Djava.library.path=$HOME/jzmq/src/main/c++/.libs -Des.security.manager.enabled=false" bin/elasticsearch``
