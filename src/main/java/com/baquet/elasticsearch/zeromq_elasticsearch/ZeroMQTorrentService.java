@@ -1,10 +1,13 @@
 package com.baquet.elasticsearch.zeromq_elasticsearch;
 
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import org.elasticsearch.SpecialPermission;
 import org.elasticsearch.action.bulk.BulkProcessor;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
@@ -111,22 +114,32 @@ public class ZeroMQTorrentService extends AbstractLifecycleComponent<ZeroMQTorre
 
     @Override
     public void run() {
-      if(zmq.createSocket()) {
-        logger.info("Starting ZeroMQ loop");
-        while (loop) {
-          if(zmq.poll(500) > 0) {
-            IndexRequestBuilder req = client.
-                prepareIndex().
-                setSource(zmq.receiveMessage()).
-                setIndex(computeIndex(prefix)).
-                setType(dataType);
-
-            bulkProcessor.add(req.request());
-          }
-        }
-        zmq.closeSocket();
-        logger.info("End of ZeroMQ loop");
+      SecurityManager sm = System.getSecurityManager();
+      if (sm != null) {
+        // unprivileged code such as scripts do not have SpecialPermission
+        sm.checkPermission(new SpecialPermission());
       }
+      AccessController.doPrivileged(new PrivilegedAction<Void>() {
+        public Void run() {
+          if(zmq.createSocket()) {
+            logger.info("Starting ZeroMQ loop");
+            while (loop) {
+              if(zmq.poll(500) > 0) {
+                IndexRequestBuilder req = client.
+                    prepareIndex().
+                    setSource(zmq.receiveMessage()).
+                    setIndex(computeIndex(prefix)).
+                    setType(dataType);
+    
+                bulkProcessor.add(req.request());
+              }
+            }
+            zmq.closeSocket();
+            logger.info("End of ZeroMQ loop");
+          }
+          return null;
+        }
+      });
     }
   }
 }
