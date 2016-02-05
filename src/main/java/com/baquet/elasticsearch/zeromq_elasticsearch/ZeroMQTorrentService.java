@@ -33,14 +33,19 @@ public class ZeroMQTorrentService extends AbstractLifecycleComponent<ZeroMQTorre
   private String prefix;
   private int bulkSize;
   private int flushInterval;
-
+  
   private volatile static Thread thread;
   private volatile static boolean loop;
   private Client client;
-
+  
   @Inject
   public ZeroMQTorrentService(Settings settings, Client client) {
     super(settings);
+    
+    SecurityManager sm = System.getSecurityManager();
+    if (sm != null) {
+      sm.checkPermission(new SpecialPermission());
+    }
     
     this.client = client;
     
@@ -60,7 +65,17 @@ public class ZeroMQTorrentService extends AbstractLifecycleComponent<ZeroMQTorre
     logger.info("Using configuration bulkSize: {}, flushInterval: {}", bulkSize, flushInterval);
     
     loop = true;
-    Runnable consumer = new Consumer(new ZeroMQWrapper(address, logger));
+    
+    ZeroMQWrapper wrapper = AccessController.doPrivileged(new PrivilegedAction<ZeroMQWrapper>() {
+      
+      @Override
+      public ZeroMQWrapper run() {
+        return new ZeroMQWrapper(address, logger);
+      }
+      
+    });
+
+    Runnable consumer = new Consumer(wrapper);
     thread = EsExecutors.daemonThreadFactory(settings, ZEROMQ_LOGSTASH).newThread(consumer);
     thread.start();
   }
@@ -114,32 +129,30 @@ public class ZeroMQTorrentService extends AbstractLifecycleComponent<ZeroMQTorre
 
     @Override
     public void run() {
-      SecurityManager sm = System.getSecurityManager();
-      if (sm != null) {
-        // unprivileged code such as scripts do not have SpecialPermission
-        sm.checkPermission(new SpecialPermission());
-      }
-      AccessController.doPrivileged(new PrivilegedAction<Void>() {
-        public Void run() {
-          if(zmq.createSocket()) {
-            logger.info("Starting ZeroMQ loop");
-            while (loop) {
-              if(zmq.poll(500) > 0) {
-                IndexRequestBuilder req = client.
-                    prepareIndex().
-                    setSource(zmq.receiveMessage()).
-                    setIndex(computeIndex(prefix)).
-                    setType(dataType);
-    
-                bulkProcessor.add(req.request());
-              }
-            }
-            zmq.closeSocket();
-            logger.info("End of ZeroMQ loop");
-          }
-          return null;
+      boolean connected = AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
+        
+        @Override
+        public Boolean run() {
+          return zmq.createSocket();
         }
+        
       });
+      if(connected) {
+        logger.info("Starting ZeroMQ loop");
+        while (loop) {
+          if(zmq.poll(500) > 0) {
+            IndexRequestBuilder req = client.
+                prepareIndex().
+                setSource(zmq.receiveMessage()).
+                setIndex(computeIndex(prefix)).
+                setType(dataType);
+
+            bulkProcessor.add(req.request());
+          }
+        }
+        zmq.closeSocket();
+        logger.info("End of ZeroMQ loop");
+      }
     }
   }
 }
