@@ -8,6 +8,7 @@ Compatibility
 |  Elasticsearch    | Plugin  | Doc                                                                        | 
 |-------------------|---------|----------------------------------------------------------------------------|
 | 2.1.1             | 0.3     | [github](https://github.com/bpaquet/elasticsearch-zeromq-torrent/tree/0.3) |
+| 2.2.0             | 0.4     | [github](https://github.com/bpaquet/elasticsearch-zeromq-torrent/tree/0.4) |
 
 This plugin use by default [JeroMQ](https://github.com/zeromq/jeromq), a pure Java ZeroMQ implementation. See below to use [JZmq](https://github.com/zeromq/jzmq).
 
